@@ -104,7 +104,6 @@ void Chain::send(int dt[]) {
 //  Serial.print(wait_time);
 //  Serial.println(" milliseconds");
 
-for (int c = 0; c <= sizeof controllers; c++) {
   // Send data MSB first
   for (int j = 0; j <= 13; j++) {
     for (int i = 15; i >= 0; i--) {
