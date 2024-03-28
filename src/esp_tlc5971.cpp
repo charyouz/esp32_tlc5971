@@ -1,4 +1,4 @@
-#include "esp_tc5791.h"
+#include "esp_tlc5971.h"
 
 int COLOR_MAX = 65500;
 
@@ -56,7 +56,7 @@ int * Controller::get_controller_data() {
   // 10010110 01011111 11111111 11111111
 
 
-  // Currently set command bits by hand
+  // Currently set command bits here.
   // The first 6 bits are the write command '100101'
   // Then comes OUTMG, EXTCLK, TMGRST, DSPRPT and BLANK, these should be '10010'
   // After that comes global brightness bits, currently 3 (RGB) x 7 bits of ones.
@@ -72,24 +72,21 @@ int * Controller::get_controller_data() {
     data_block[j] = leds[i].get_r();
     j++;
   }
-  Serial.println("Controller data: ");
-  for (int j = 0; j<= 13; j++) {
-     for (int i = 15; i >= 0; i--)
-    {
-        bool b = bitRead(data_block[j], i);
-        Serial.print(b);
+//  Serial.println("Controller data: ");
+//  for (int j = 0; j<= 13; j++) {
+//     for (int i = 15; i >= 0; i--)
+//    {
+//        bool b = bitRead(data_block[j], i);
+//        Serial.print(b);
     }
-    Serial.print("\n");
+//    Serial.print("\n");
   }
   return data_block;
 };
 
 Chain::Chain() {};
 
-void Chain::begin(int data_pin_, int clock_pin_, int kHz_){
-  data_pin = data_pin_;
-  clock_pin = clock_pin_;
-  kHz = kHz_;
+void Chain::begin(int data_pin, int clock_pin, int kHz){
   pinMode(data_pin,OUTPUT);
   pinMode(clock_pin,OUTPUT);
 
@@ -103,10 +100,11 @@ void Chain::send(int dt[]) {
   // time to wait between clock signal high's in us
   int wait_time = 1000 / (2 * kHz);
 
-  Serial.print("Wait time between bits is ");
-  Serial.print(wait_time);
-  Serial.println(" milliseconds");
+//  Serial.print("Wait time between bits is ");
+//  Serial.print(wait_time);
+//  Serial.println(" milliseconds");
 
+for (int c = 0; c <= sizeof controllers; c++) {
   // Send data MSB first
   for (int j = 0; j <= 13; j++) {
     for (int i = 15; i >= 0; i--) {
@@ -119,8 +117,9 @@ void Chain::send(int dt[]) {
     };
   };
   digitalWrite(data_pin, LOW);  // set data pin to low between data.
-  Serial.println("Data sent");
+// Serial.println("Data sent");
 };
+
 
 void Chain::print_data() {
   Serial.println(kHz);

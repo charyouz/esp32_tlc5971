@@ -1,5 +1,5 @@
-#ifndef esp_tc5791_h
-#define esp_tc5791_h
+#ifndef esp_tlc5971_h
+#define esp_tlc5971_h
 
 #include <Arduino.h>
 
@@ -16,10 +16,10 @@ class Led {
     int get_b();
 };
 
-// struct for each individual controllet
+// struct for each individual controller
 class Controller {
   private:
-    int WRITE_CMD = 0x25;  // 6 long
+    int WRITE_CMD = 0x25;  // 6 long write command. This is needed in order for the TLC5971 to write data to its memory
     int FC_BLOCK = 0b10010;  // 5 long
     int BCB = 0x7F;  // 7 long
     int BCG = 0x7F;
@@ -41,11 +41,12 @@ class Chain {
     int kHz;
     int data_pin;
     int clock_pin;
-    
+    int controllers[ controller_amount ];
+
   public:
     Chain();
     void begin(int data_pin, int clock_pin, int kHz);
     void print_data();
-    void send(int dt[]);
+    void send();
 };
 #endif
