@@ -1,34 +1,34 @@
 #include "esp_tlc5971.h"
 
-// SW version
-#define MAJOR 0
-#define MINOR 3
-#define PATCH 0
-
-//onboard LED
-#define LED 2
-
-// setup LED drivers (2)
+// setup LED drivers here 2 conterollers are connected in series
 // Change this to however may TLC5971 there are in a line
 Controller chain[2] = {Controller(), Controller()};
+
+// Setup max values to LEDs, this is dependent on the LED and how much current they can draw.
+// Also if you want the LEDs to be dimmer, change these values to be lower.
+// These are currently the MAX values that the driver allows
 float led_driver_prcnt = 1;
 int led_max = 65500;
 int led_max_value;
 
+// Setup a Chain struct so tthat data can be sent to the TLC5971 drivers.
 Chain chaine;
 
 void setup() {
   //LED driver setup
-  chaine.begin(19, 18, 8); // data, clock, kHz
-  chaine.print_data();
+  chaine.begin(19, 18, 8); // data pin, clock pin, kHz for data transmission
+  chaine.print_data(); //print debug data
 
   Serial.println("Program starting");
 
-  //setup random seed
+  //setup random seed for LED random colours
   randomSeed(analogRead(0));
   Serial.println("Random seed setup");
 
-  //set LEDs to some color at start:
+  // set LEDs to some color at start
+  // Use the same way ot manuallly set LED colours command is:
+  // set_led(led_number, red, green, blue)
+  // the max value is 65500, and this is basically the percentage value between 0 and that
   for (int i; i<2; i++) {
     for (int j; j<4; j++) {
       chain[i].set_led(j, 3000, 3000, 3000);
@@ -56,13 +56,13 @@ void loop() {
   for (int j = 0; j<2; j++) {
     Serial.print("Data for controller ");
     Serial.println(j);
+    // get controller data
     int * contr_data = chain[0].get_controller_data();
+    // send data to controllers
     chaine.send(contr_data);
   };
 
 
-  delay(50);
-  digitalWrite(LED,LOW);
   Serial.println("Waiting");
-  delay(1000);  //delay 1 sec for testing purposes
+  delay(1000);  //delay 1 sec before changing LED colours
 }

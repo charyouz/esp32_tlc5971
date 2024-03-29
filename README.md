@@ -15,12 +15,12 @@ The basic idea is that you have 4 LEDs connected to X amount of controllers, tha
 
 The minimum to get 8 LEDs connected to 2 Controllers to work is:
 
-´´´
+```
 #include "esp_tlc5971.h"
 
 //Setup 2 LED controllers
 Controller chain[2] = {Controller(), Controller()};
-´´´
+```
 If you have more or less controllers, set the correct amount here.
 
 Currently you need to send each controllers data individually with send_data(). So you would iterate over the controllers you have setup and
