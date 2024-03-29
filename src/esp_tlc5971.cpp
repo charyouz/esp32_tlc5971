@@ -22,7 +22,14 @@ int Led::get_b(){
   return b;
 };
 
-Controller::Controller() {};
+Controller::Controller() {
+  // The first 6 bits are the write command '100101'
+  // Then comes OUTMG, EXTCLK, TMGRST, DSPRPT and BLANK, these should be '10010'
+  // After that comes global brightness bits, currently 3 (RGB) x 7 bits of ones.
+  data_block[0] = 0b1001011001011111;
+  data_block[1] = 0b1111111111111111;
+
+};
 
 int percentage_to_led_brightness(int per) {
   if (per == 0){
@@ -54,14 +61,6 @@ int Controller::get_led_b(int led) {
 int * Controller::get_controller_data() {
   // Command bits are for default commands
   // 10010110 01011111 11111111 11111111
-
-
-  // Currently set command bits here.
-  // The first 6 bits are the write command '100101'
-  // Then comes OUTMG, EXTCLK, TMGRST, DSPRPT and BLANK, these should be '10010'
-  // After that comes global brightness bits, currently 3 (RGB) x 7 bits of ones.
-  data_block[0] = 0b1001011001011111;
-  data_block[1] = 0b1111111111111111;
 
   int j = 2;
   for (int i = 0; i<4; i++) {
