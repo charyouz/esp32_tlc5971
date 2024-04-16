@@ -42,6 +42,19 @@ int percentage_to_led_brightness(int per) {
   }
 }
 
+void Controller::set_led_brightness(int percentage) {
+  int brightness = percentage_to_led_brightness(percentage);
+  uint raw_data = 0b10010110010000000000000000000000;
+
+  for (i=0; i<3;i++) {
+    raw_data = raw_data | brightness << (i * 7); // Move bits to correct palce an OR them
+  };
+
+  // Write the data to the data blocks
+  data_block[0] = raw_data & 0xFFFF >> 16;
+  data_block[1] = raw_data & 0xFFFF;
+}
+
 void Controller::set_led(int led, int r, int g, int b) {
   leds[led].set_led(r, g, b);
 };
