@@ -23,7 +23,7 @@ Controller chain[2] = {Controller(), Controller()};
 ```
 If you have more or less controllers, set the correct amount here.
 
-Currently you need to send each controllers data individually with send_data(). So you would iterate over the controllers you have setup and
+Currently, you need to send each controllers data individually with send_data(). So you would iterate over the controllers you have set up and
 then use their pointers as input for the send_data() function.
 
 

@@ -11,7 +11,7 @@ float led_driver_prcnt = 1;
 int led_max = 65500;
 int led_max_value;
 
-// Setup a Chain struct so tthat data can be sent to the TLC5971 drivers.
+// Setup a Chain struct so that data can be sent to the TLC5971 drivers.
 Chain chaine;
 
 void setup() {
